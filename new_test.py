@@ -1,18 +1,12 @@
 import pandas as pd
 import os,sys,glob,psutil
-#environment variable setting
-os.environ['rosetta'] = '/lwork01/rosetta_src_2019.40.60963_bundle/main/source/bin/'
-os.environ['rosetta_clean'] = '/lwork01/rosetta_src_2019.40.60963_bundle/tools/protein_tools/scripts/'
-rosetta = os.environ['rosetta']
-rosetta_clean = os.environ['rosetta_clean']
-os.environ['PATH'] += os.environ['PATH'] + rosetta + ':' + os.environ['PATH']
-os.environ['PATH'] += os.environ['PATH'] + rosetta_clean + ':' + os.envirion['PATH']
+
 def reading_DB(x):
     hladb = pd.read_csv(x,sep='\t')
     indb = hladb[hladb['PDB ID'] == pdbid].dropna()
-    hlaclass = indb['HLA Class']
-    hlatype = indb['HLA Type']
-    o_seq = indb['Sequnce']
+    hlaclass = indb['HLA CLASS']
+    hlatype = indb['HLA TYPE']
+    o_seq = indb['Peptide Sequence']
     seqlen = len(o_seq)
 
 def mutate(x,y):
@@ -82,7 +76,26 @@ pdbid = sys.argv[1]
 inseq = sys.argv[2]
 nout = sys.argv[3]
 ncpu = str(psutil.cpu_count()-1)
-
+if int(ncpu) >= 17 :
+    os.environ['rosetta'] = '/lwork01/rosetta_src_2019.40.60963_bundle/main/source/bin/'
+    os.environ['rosetta_clean'] = '/lwork01/rosetta_src_2019.40.60963_bundle/tools/protein_tools/scripts/'
+    os.environ['neogear'] = '/lwork01/neoscan_gear/'
+    gear = os.environ['neogear']
+    rosetta = os.environ['rosetta']
+    rosetta_clean = os.environ['rosetta_clean']
+    os.environ['PATH'] += ':' + os.environ['PATH'] + rosetta + ':' + os.environ['PATH']
+    os.environ['PATH'] += ':' + os.environ['PATH'] + rosetta_clean + ':' + os.envirion['PATH']
+    os.environ['PATH'] += ':' + os.environ['PATH'] + gear + ':' + os.environ['PATH']
+else:
+    os.environ['rosetta'] = '/awork06-1/rosetta_src_2019.40.60963_bundle/main/source/bin/'
+    os.environ['rosetta_clean'] = '/awork06-1/rosetta_src_2019.40.60963_bundle/tools/protein_tools/scripts/'
+    os.environ['neogear'] = '/awork06-1/neoscan_gear/'
+    gear = os.environ['neogear']
+    rosetta = os.environ['rosetta']
+    rosetta_clean = os.environ['rosetta_clean']
+    os.environ['PATH'] += ':' + os.environ['PATH'] + rosetta + ':' + os.environ['PATH']
+    os.environ['PATH'] += ':' + os.environ['PATH'] + rosetta_clean + ':' + os.envirion['PATH']
+    os.environ['PATH'] += ':' + os.environ['PATH'] + gear + ':' + os.environ['PATH']
 
 
 #rosetta clean py, divide by chain
