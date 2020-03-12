@@ -349,6 +349,8 @@ def enva_part(y):
 pdbid = sys.argv[1]
 inseq = sys.argv[2]
 nout = sys.argv[3]
+dbfile = sys.argv[4]
+reading_DB(dbfile)
 ncpu = str(psutil.cpu_count()-1)
 feats = pd.read_csv(PDBLIB + '/' + pdbid + '.out',sep='\t',header=None)
 feats_filter = feats[feats[17] == 1].iloc[:,13:16]
