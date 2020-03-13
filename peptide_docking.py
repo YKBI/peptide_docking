@@ -82,11 +82,11 @@ def native(x):
 def mutate(pdbid,inseq):
     mtd_lines = []
     if int(ncpu) >= 17:
-        os.environ['MMTSB'] = '/lwork01/mmtsb'
+        os.environ['MMTSBDIR'] = '/lwork01/mmtsb/'
     else:
-        os.environ['MMTSB'] = '/awork06-1/YKLee/mmtsb'
-    mmtsb = os.environ['MMTSB']
-    os.environ['PATH'] +=  os.environ['PATH'] + ':' + mmtsb + '/perl:' + mmtsb + '/bin'
+        os.environ['MMTSBDIR'] = '/awork06-1/YKLee/mmtsb/'
+    mmtsb = os.environ['MMTSBDIR']
+    os.environ['PATH'] +=  ':' + os.environ['PATH'] + ':' + mmtsb + '/perl:' + mmtsb + '/bin'
     os.system('mutate.pl -seq 1:' + inseq + ' ' + pdbid + '_B.pdb > ' + inseq + '_mtd.pdb')
     with open(inseq + '_mtd.pdb','r') as MP:
         for line in MP.readlines():
