@@ -81,7 +81,10 @@ def native(x):
 
 def mutate(pdbid,inseq):
     mtd_lines = []
-    os.environ['MMTSB'] = '/lwork01/mmtsb'
+    if int(ncpu) >= 17:
+        os.environ['MMTSB'] = '/lwork01/mmtsb'
+    else:
+        os.environ['MMTSB'] = '/awork06-1/YKLee/mmtsb'
     mmtsb = os.environ['MMTSB']
     os.environ['PATH'] +=  os.environ['PATH'] + ':' + mmtsb + '/perl:' + mmtsb + '/bin'
     os.system('mutate.pl -seq 1:' + inseq + ' ' + pdbid + '_B.pdb > ' + inseq + '_mtd.pdb')
@@ -389,8 +392,8 @@ if int(ncpu) >= 17 :
     PEPLIB = '/lwork01/peptide/' + hla + '/'
     RECLIB = '/lwork01/receptor/' + hla + '/'
     ROSETTA_DB = rosetta + 'main/database'
-else:
-    os.environ['rosetta'] = '/awork06-1/rosetta_src_2019.40.60963_bundle/'
+elif int(ncpu) < 17 :
+    os.environ['rosetta'] = '/awork08/93_hong/rosetta_src_2019.14.60699_bundle/'
     os.environ['neogear'] = '/awork06-1/neoscan_gear/'
     gear = os.environ['neogear']
     rosetta = os.environ['rosetta']
