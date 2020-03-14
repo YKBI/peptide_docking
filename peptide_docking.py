@@ -123,7 +123,7 @@ def write_exec(pdb,seq):
     secondstep_lines=['-s ' + 'PPK_' + pdb + '_' + seq + '_inp_0001.pdb',\
                   '-native ' + PDBLIB + hla + '_native/' + pdb + '_native.pdb',\
                   '-out:path:all PDB_2ND',\
-                  '-out:prefix 2ND',\
+                  '-out:prefix 2ND_',\
                   '-out:file:scorefile score_2nd_' + pdb + '_' + seq + '.sc',\
                   '-nstruct ' + nout,\
                   '-flexPepDocking:pep_refine',\
@@ -163,7 +163,7 @@ def prepare_input(x):
 def enva_working(x):
     inf = x.split('.')[0]
     os.system('csplit -f "%s_" %s.pdb \'/TER/\';sed \'s/ATOM  /HETATM/\' %s_01 > %s_02; cat %s_00 %s_02 > %s_het.pdb'%(inf,inf,inf,inf,inf,inf,inf))
-    os.system('cp %s.pdb %s.pdb'%(inf,inf.split('_')[-3]))
+    os.system('cp %s.pdb %s.pdb'%(inf,inf.split('_')[-2]))
     if not os.path.exists(inf + '_a.out'):
         os.system('enva_rec.v1.1 -a ' + inf + '.pdb > ' + inf + '_a.out')
     if not os.path.exists(inf + '_b.out'):
@@ -237,7 +237,7 @@ def txt_writing(x):
         os.system('rmsd_total ' + PEPLIB + '/' + pdbid + '_pep.pdb ' + i + '_01 bb >> ' + x + '_rmsd.txt')
     for f, g in zip(sorted(glob.glob('*a.out')), sorted(glob.glob('*m.out'))):
         sidx = []
-        pdb = '_'.join([pdbid, str(x),f.split('.')[0].split('_')[5]])
+        pdb = '_'.join([pdbid, str(x),f.split('.')[0].split('_')[6]])
         pdbl.append(pdb)
         adf = pd.read_csv(f, sep='\s+', skiprows=[0, 0], header=None)
         mdf = pd.read_csv(g, sep='\s+', header=None)
@@ -290,7 +290,7 @@ def txt_writing(x):
             nn_list.append(n)
         with open(f, 'r') as F:
             hh_list.append(len(F.readlines()))
-        ff_list.append(pdbid + '_' + str(x) + '_' + f.split('.')[0].split('_')[-4])
+        ff_list.append(pdbid + '_' + str(x) + '_' + f.split('.')[0].split('_')[6])
     with open(x + '_hh.txt', 'w') as W:
         W.write('PDB\tN.of.BB_full\tN.of.BB_feat\n')
         for i, j, k in zip(ff_list, hh_list, nn_list):
@@ -300,7 +300,7 @@ def txt_writing(x):
     psi_columns = ['PSI%d' % i for i in range(1, seqlen + 1)]
     pdbl = []
     for f in sorted(glob.glob('*.env')):
-        pdb = '_'.join([pdbid, str(x), f.split('.')[0].split('_')[5]])
+        pdb = '_'.join([pdbid, str(x), f.split('.')[0].split('_')[6]])
         pdbl.append(pdb)
         with open(f, 'r') as F:
             acc = []
