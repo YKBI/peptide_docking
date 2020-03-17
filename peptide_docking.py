@@ -162,7 +162,7 @@ def prepare_input(x):
 
 def enva_working(x):
     inf = x.split('.')[0]
-    os.system('csplit -f "%s_" %s.pdb \'/TER/\';sed \'s/ATOM  /HETATM/\' %s_01 > %s_02; cat %s_00 %s_02 > %s_het.pdb'%(inf,inf,inf,inf,inf,inf,inf))
+    os.system('csplit -f "%s_" %s.pdb \'/TER/\' --quiet;sed \'s/ATOM  /HETATM/\' %s_01 > %s_02; cat %s_00 %s_02 > %s_het.pdb'%(inf,inf,inf,inf,inf,inf,inf))
     os.system('cp %s.pdb %s.pdb'%(inf,inf.split('_')[-2]))
     if not os.path.exists(inf + '_a.out'):
         os.system('enva_rec.v1.1 -a ' + inf + '.pdb > ' + inf + '_a.out')
