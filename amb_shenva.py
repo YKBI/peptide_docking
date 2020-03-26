@@ -275,7 +275,7 @@ RECLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 PEPLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 
 refer = PDBLIB + '/' + pdbid + '_native.pdb'
-ncpu = str(psutil.cpu_count() - 1)
+ncpu = str(psutil.cpu_count()-1)
 feats = pd.read_csv(PDBLIB  + pdbid + '.out',sep='\s+',header=None)
 feats_filt = feats[feats[17] == 1].iloc[:,13:16]
 for i in feats_filt.values.tolist():
@@ -290,7 +290,7 @@ os.chdir('traj_1/')
 os.mkdir(pdbid + '_' + hla + '_energy_matrix')
 os.chdir('pdb_from_prod/')
 list1 = sorted(glob.glob('*.pdb.*'))
-pool = Pool(ncpu)
+pool = Pool(int(ncpu))
 pool.map(reT,list1)
 pool.close()
 pool.join()
