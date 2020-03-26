@@ -27,7 +27,8 @@ def reading_DB(x):
     bclass = indb['Beta CLASS'].values[0]
     ffreq = indb['Freq'].values[0]
     seqlen = len(o_seq)
-    hla = aclass + ''.join(atype.split(':')) + '_' + bclass + ''.join(btype.split(':'))
+    #hla = aclass + ''.join(atype.split(':')) + '_' + bclass + ''.join(btype.split(':'))
+    hla = aclass[:-1] + ''.join(atype.split(':')) + '_' + ''.join(btype.split(':'))
     return ffreq,hla,seqlen,o_seq
 def reT(x):
     nam = x.split('.')
