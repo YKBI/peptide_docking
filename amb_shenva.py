@@ -234,6 +234,7 @@ def hh_part(x):
         for i, j, k in zip(ff_list, hh_list, nn_list):
             W.write(str(i) + '\t' + str(j) + '\t' + str(k) + '\n')
 def ac_part(x):
+    pdbl = []
     tt_acc = []
     tt_phi = []
     tt_psi = []
@@ -289,7 +290,7 @@ for i,j in zip(rfeats,rfeats1):
 os.chdir('traj_1/')
 os.mkdir(pdbid + '_' + hla + '_energy_matrix')
 os.chdir('pdb_from_prod/')
-list1 = sorted(glob.glob('*.pdb.*'))
+list1 = sorted(glob.glob('*.pdb.*'))[:10]
 pool = Pool(int(ncpu))
 pool.map(reT,list1)
 pool.close()
