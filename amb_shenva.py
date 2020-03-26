@@ -36,21 +36,33 @@ def reT(x):
     Olines = []
     recl = []
     pepl = []
-    with open(x,'r') as F:
+    os.system('csplit -f \'%s_\' %s \'/TER/\' --quiet')
+    with open(x + '_00', 'r') as F:
         for line in F.readlines():
             tline = line.strip()
-            if tline.startswith('ATOM') :
+            if tline.startswith('ATOM'):
                 if tline[-1] != 'H':
-                    Olines.append(tline)
-    for line in Olines:
-        if line[21] == 'A':
-            recl.append(line)
-        elif line[21] != 'A':
-            pepl.append(line[:21] + 'B ' + line[23:])
+                    recl.append(tline[:21] + 'A ' + tline[23:])
+    with open(x + '_01','r') as F:
+        for line in F.readlines():
+            tline = line.strip()
+            if tline.startswith('ATOM'):
+                if tline[-1] != 'H':
+                    pepl.append(tline[:21] + 'B ' + tline[23:])
+    #with open(x,'r') as F:
+    #    for line in F.readlines():
+    #        tline = line.strip()
+    #        if tline.startswith('ATOM') :
+    #            if tline[-1] != 'H':
+    #                Olines.append(tline)
+    #for line in Olines:
+    #    if line[21] == 'A':
+    #        recl.append(line)
+    #    elif line[21] != 'A':
+    #        pepl.append(line[:21] + 'B ' + line[23:])
     with open(nam1 + '.red.pdb','w') as W:
         for line in recl:
             W.write(line + '\n')
-        W.write('TER\n')
         for line in pepl:
             W.write(line + '\n')
 
@@ -217,6 +229,7 @@ def nac_sk_part(x):
 def hh_part(x):
     ff_list = []
     hh_list = []
+    nn_list = []
 
     for f in sorted(glob.glob('*b.out')):
         with open(f, 'r') as F:
