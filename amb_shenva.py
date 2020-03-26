@@ -36,7 +36,7 @@ def reT(x):
     Olines = []
     recl = []
     pepl = []
-    os.system('csplit -f \'%s_\' %s \'/TER/\' --quiet')
+    os.system('csplit -f \'%s_\' %s \'/TER/\' --quiet'%(x,x))
     with open(x + '_00', 'r') as F:
         for line in F.readlines():
             tline = line.strip()
