@@ -32,7 +32,7 @@ def reading_DB(x):
     return ffreq,hla,seqlen,o_seq
 def reT(x):
     nam = x.split('.')
-    nam1 = '.'.join([nam[0], nam[3], nam[2]])
+    nam1 = '.'.join([nam[0], nam[3],'red',nam[2]])
     Olines = []
     recl = []
     pepl = []
@@ -60,7 +60,7 @@ def reT(x):
     #        recl.append(line)
     #    elif line[21] != 'A':
     #        pepl.append(line[:21] + 'B ' + line[23:])
-    with open(nam1 + '.red.pdb','w') as W:
+    with open(nam1,'w') as W:
         for line in recl:
             W.write(line + '\n')
         for line in pepl:
