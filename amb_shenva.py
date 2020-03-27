@@ -85,7 +85,7 @@ def revise_origin(x):
                     rnn = int(line[22:26].strip())
                     rec_ser = []
                     rec_ser.append(line[13:17].strip())
-    with open('../' + x,'r') as P: #peptide reading
+    with open(PEPLIB + x + '_pep.pdb','r') as P: #peptide reading
         for line in P.readlines():
             lig_n.append(line[7:13].strip())
             if line[13:17].strip() == 'OXT' or line[13:17].strip() == '':
