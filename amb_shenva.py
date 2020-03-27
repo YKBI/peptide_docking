@@ -50,7 +50,7 @@ def reT(x):
             tline = line.strip()
             if tline.startswith('ATOM'):
                 if tline[-1] != 'H':
-                    pepl.append(tline[:21] + 'B  ' + str(pep_dic[int(tline[23:28].strip())]).rjust(4) + tline[28:])
+                    pepl.append(tline[:21] + 'B' + str(pep_dic[tline[23:26].strip()]).rjust(4) + tline[26:])
     #with open(x,'r') as F:
     #    for line in F.readlines():
     #        tline = line.strip()
