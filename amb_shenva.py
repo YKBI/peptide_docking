@@ -135,11 +135,11 @@ def atom_revise(x):
                     olig_ser[line[13:17].strip()] = line
     with open('feat.list','r') as feat:
         for i in feat.readlines():
-            for j in lig_dic[i]:
-                lig_lines.append(lig_dic2[i][j].strip())
+            for j in lig_dic[i.strip()]:
+                lig_lines.append(lig_dic2[i.strip()][j.strip()].strip())
         for i in rec_dic:
-            for j in rec_dic[i]:
-                out_lines.append(rec_dic[i][j].strip())
+            for j in rec_dic[i.strip()]:
+                out_lines.append(rec_dic[i.strip()][j.strip()].strip())
     with open(revnam,'w') as W:
         for i,j in zip(out_lines,rec_n):
             W.write(i[:7] + j.rjust(4) + '  ' + i[13:21] + 'A ' + i[23:] + '\n')
