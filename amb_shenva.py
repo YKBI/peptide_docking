@@ -63,6 +63,7 @@ def reT(x):
     with open(nam1,'w') as W:
         for line in recl:
             W.write(line + '\n')
+        W.write('TER\n')
         for line in pepl:
             W.write(line + '\n')
 
