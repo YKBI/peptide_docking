@@ -11,10 +11,12 @@ hh = []
 rmsd = []
 rfeats = []
 rfeats1 = []
+pep_feat = []
 #dictionaries
 rec_dic = {}
 lig_dic = {}
 cc_dic = {}
+pep_dic = {}
 def reading_DB(x):
     hladb = pd.read_csv(x,sep='\t')
     indb = hladb[hladb['PDB'] == pdbid.upper()].dropna()
@@ -48,7 +50,7 @@ def reT(x):
             tline = line.strip()
             if tline.startswith('ATOM'):
                 if tline[-1] != 'H':
-                    pepl.append(tline[:21] + 'B ' + tline[23:])
+                    pepl.append(tline[:21] + 'B ' + tline[23:24] + str(pep_dic[int(tline[24:28].strip())]).rjust(4) + tline[28:])
     #with open(x,'r') as F:
     #    for line in F.readlines():
     #        tline = line.strip()
@@ -112,7 +114,6 @@ def atom_revise(x):
     rec_dic2 = {}
     lig_lines = []
     out_lines = []
-
     with open(x,'r') as F:
         for line in F.readlines():
             if line[21:23].strip() == 'A':
@@ -281,7 +282,11 @@ def ac_part(x):
 pdbid = sys.argv[1]
 infile = sys.argv[2]
 (ffreq,hla,seqlen,o_seq) = reading_DB(infile)
-
+with open('feat.list','r') as F:
+    for line in F.readlines():
+        pep_feat.append(line.strip())
+for i,j in zip(pep_feat,range(1,len(pep_feat)+1)):
+    pep_dic[i] = j
 os.environ['neogear'] = '/awork06-1/neoscan_gear/'
 gear = os.environ['neogear']
 os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + gear
