@@ -134,21 +134,20 @@ def atom_revise(x):
                     nnn = int(line[23:26].strip())
                     olig_ser = {}
                     olig_ser[line[13:17].strip()] = line
-    with open('feat.list','r') as feat:
-        for i in feat.readlines():
-            for j in lig_dic[i.strip()]:
-                lig_lines.append(lig_dic2[i.strip()][j.strip()].strip())
-        for i in rec_dic:
-            for j in rec_dic[i.strip()]:
-                out_lines.append(rec_dic[i.strip()][j.strip()].strip())
+    feature = list(set(pep_dic.values()))
+    for i in feature:
+        for j in lig_dic[i]:
+            lig_lines.append(lig_dic2[i][j].strip())
+    for i in rec_dic:
+        for j in rec_dic[i]:
+            out_lines.append(rec_dic2[i][j].strip())
     with open(revnam,'w') as W:
         for i,j in zip(out_lines,rec_n):
-            W.write(i[:7] + j.rjust(4) + '  ' + i[13:21] + 'A ' + i[23:] + '\n')
+            W.write(i[:7] + j.rjust(4) + '  ' + i[13:] + '\n')
         W.write('TER\n')
         for i,j in zip(lig_lines,lig_n):
-            W.write(i[:7] + j.rjust(4) + '  ' + i[13:21] + 'B ' + i[23:] + '\n')
+            W.write(i[:7] + j.rjust(4) + '  ' + i[13:] + '\n')
         W.write('END\n')
-
 def sheba_enva(x):
     nam = x.split('.')
     num = nam[1]
