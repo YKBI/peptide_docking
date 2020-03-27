@@ -165,13 +165,13 @@ def enva_working(x):
     os.system('csplit -f "%s_" %s.pdb \'/TER/\' --quiet;sed \'s/ATOM  /HETATM/\' %s_01 > %s_02; cat %s_00 %s_02 > %s_het.pdb'%(inf,inf,inf,inf,inf,inf,inf))
     os.system('cp %s.pdb %s.pdb'%(inf,inf.split('_')[-2]))
     if not os.path.exists(inf + '_a.out'):
-        os.system('enva_rec.v1.1 -a ' + inf + '.pdb > ' + inf + '_a.out')
+        os.system('enva.v2 -a ' + inf + '.pdb > ' + inf + '_a.out')
     if not os.path.exists(inf + '_b.out'):
-        os.system('enva_rec.v1.1 -b ' + inf + '_het.pdb > ' + inf + '_b.out')
+        os.system('enva.v2 -b ' + inf + '_het.pdb > ' + inf + '_b.out')
     if not os.path.exists(inf + '_m.out'):
-        os.system('enva_rec.v1.1 -m ' + inf.split('_')[-3] + '.pdb ' + inf.split('_')[-3] + 'B > ' + inf + '_m.out')
+        os.system('enva.v2 -m ' + inf.split('_')[-3] + '.pdb ' + inf.split('_')[-3] + 'B > ' + inf + '_m.out')
     if not os.path.exists('*.env'):
-        os.system('enva_rec.v1.1 -e ' + inf + '.pdb B')
+        os.system('enva.v2 -e ' + inf + '.pdb B')
 
 def atom_revise(x):
     rnn = 1
