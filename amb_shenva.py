@@ -299,7 +299,7 @@ for i in feats1_filt.values.tolist():
     rfeats1.append(str(i[0]) + '_' + '_'.join(i[2:]))
 for i,j in zip(rfeats,rfeats1):
     cc_dic[i] = j
-
+revise_origin(pdbid)
 os.chdir('traj_1/')
 os.mkdir(pdbid + '_' + hla + '_energy_matrix')
 os.chdir('pdb_from_prod/')
@@ -308,6 +308,13 @@ pool = Pool(int(ncpu))
 pool.map(reT,list1)
 pool.close()
 pool.join()
+
+list22 = sorted(glob.glob('*.red.*'))
+pool1 = Pool(int(ncpu))
+pool1.map(atom_revise,list22)
+pool1.close()
+pool1.join()
+
 list2 = sorted(glob.glob('*.rev.*'))
 pool2 = Pool(int(ncpu))
 pool2.map(sheba_enva,list2)
