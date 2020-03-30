@@ -51,17 +51,6 @@ def reT(x):
             if tline.startswith('ATOM'):
                 if tline[-1] != 'H':
                     pepl.append(tline[:21] + 'B' + str(pep_dic[tline[23:26].strip()]).rjust(4) + tline[26:])
-    #with open(x,'r') as F:
-    #    for line in F.readlines():
-    #        tline = line.strip()
-    #        if tline.startswith('ATOM') :
-    #            if tline[-1] != 'H':
-    #                Olines.append(tline)
-    #for line in Olines:
-    #    if line[21] == 'A':
-    #        recl.append(line)
-    #    elif line[21] != 'A':
-    #        pepl.append(line[:21] + 'B ' + line[23:])
     with open(nam1,'w') as W:
         for line in recl:
             W.write(line + '\n')
@@ -150,20 +139,23 @@ def atom_revise(x):
         W.write('END\n')
 def sheba_enva(x):
     nam = x.split('.')
-    num = nam[1]
+    num = str(nam[1])
     nana = pdbid + '_' + num
-    namtrf = '.'.join([nam[0],nam[1],nam[2],'trf'])
+    namtrf = '.'.join([nam[0],num,nam[2]])
+    nnn = '.'.join([nam[0],nam[1],nam[2]])
     outform1 = pdbid + '_' + num + '.pdb'
     outform2 = pdbid + '_' + num + '_new.pdb'
     outform3 = pdbid + '_' + num + '_het.pdb'
-    os.system('sheba_01 -x ' + refer + ' ' + nam)
-    os.system('sheba_01 -t ' + namtrf + ' ' + nam)
-    shutil.move(nam + '.pdb',outform1)
-    os.system('python clean_pdb.py ' + outform1 + ' B')
-    os.system('csplit -f \'%s_\' %s.pdb \'/TER/\' --quiet')
-    os.system('cat %s_rec.pdb %s_B.pdb > %s_new.pdb')
-    os.system('sed \'s/ATOM  /HETATM/\' %s_01 > %s_02')
-    os.system('cat %s_rec.pdb %s_02 > %s_het.pdb')
+    os.system('python ' + ROSETTA + '/clean_pdb.py %s A'%x)
+    os.system('python ' + ROSETTA + '/clean_pdb.py %s B'%x)
+    os.system('cat ' + nnn + '_A.pdb ' + nnn + '_B.pdb > ' + nnn + '_AB.pdb')
+    os.system('sheba_01 -x ' + refer + ' ' + nnn + '_AB.pdb')
+    os.system('sheba_01 -t ' + namtrf + '_AB.trf ' + nnn + '_AB.pdb')
+    shutil.move(nnn + '_AB.pdb.pdb',outform1)
+    os.system('python ' + ROSETTA + '/clean_pdb.py ' + outform1 + ' B')
+    os.system('cat ' + RECLIB + '%s_rec.pdb %s_%s_B.pdb > %s'%(pdbid,pdbid,num,outform2))
+    os.system('sed \'s/ATOM  /HETATM/\' %s_%s_B.pdb > %s_%s_02'%(pdbid,num,pdbid,num))
+    os.system('cat ' + RECLIB + '%s_rec.pdb %s_%s_02 > %s'%(pdbid,pdbid,num,outform3))
 
     if not os.path.exists(nana + '_a.out'):
         os.system('enva.v2 -a ' + outform2 + ' > ' + nana + '_a.out')
@@ -174,20 +166,21 @@ def sheba_enva(x):
     os.system('enva.v2 -e ' + outform2 + ' B')
 
 def rmsd_part(x):
-    for i in sorted(glob.glob('*rev.pdb')):
-        os.system('csplit -f \'' + i + '_\'' + i + ' \'/TER/\' --quiet')
-        os.system('rmsd_total ' + PEPLIB + '/' + pdbid + '_pep.pdb ' + i + '_01 bb >> ' + x + '_rmsd.txt')
+    for i in sorted(glob.glob(pdbid + '_*_B.pdb')):
+        #os.system('csplit -f \'' + i + '_\'' + i + ' \'/TER/\' --quiet')
+        os.system('rmsd_total ' + PEPLIB + '/' + pdbid + '_pep.pdb ' + i + ' bb >> ' + x + '_rmsd.txt')
 def nac_sk_part(x):
     pdbl = []
     mat_lst = []
     newl = []
     tttt = []
+    ave_acc = []
     tot_lig_acc = 0
     ave_lig_acc = 0
     tot_lig_num = 0
     for f, g in zip(sorted(glob.glob('*a.out')),sorted(glob.glob('*m.out'))):
         sidx = []
-        pdb = '_'.join([pdbid, str(x), f.split('.')[0].split('_')[6]])
+        pdb = '_'.join([pdbid, str(x), f.split('.')[0].split('_')[1]])
         pdbl.append(pdb)
         adf = pd.read_csv(f, sep='\s+', skiprows=[0, 0], header=None)
         mdf = pd.read_csv(g, sep='\s+', header=None)
@@ -242,7 +235,7 @@ def hh_part(x):
             nn_list.append(n)
         with open(f, 'r') as F:
             hh_list.append(len(F.readlines()))
-        ff_list.append(pdbid + '_' + str(x) + '_' + f.split('.')[0].split('_')[6])
+        ff_list.append(pdbid + '_' + str(x) + '_' + f.split('.')[0].split('_')[1])
     with open(x + '_hh.txt', 'w') as W:
         W.write('PDB\tN.of.BB_full\tN.of.BB_feat\n')
         for i, j, k in zip(ff_list, hh_list, nn_list):
@@ -256,7 +249,7 @@ def ac_part(x):
     phi_columns = ['PHI%d' % i for i in range(1, seqlen + 1)]
     psi_columns = ['PSI%d' % i for i in range(1, seqlen + 1)]
     for f in sorted(glob.glob('*.env')):
-        pdb = '_'.join([pdbid, str(x), f.split('.')[0].split('_')[6]])
+        pdb = '_'.join([pdbid, str(x), f.split('_')[0].split('B')[1]])
         pdbl.append(pdb)
         with open(f, 'r') as F:
             acc = []
@@ -276,7 +269,7 @@ def ac_part(x):
     phi_df = pd.concat(tt_phi, ignore_index=True).reindex()
     psi_df = pd.concat(tt_psi, ignore_index=True).reindex()
     act_df = pd.concat([pdbdf, acc_df, phi_df, psi_df], axis=1)
-    act_df.to_csv(x + '_ac_ct.txt', sep='\t', index=False)
+    act_df.to_csv(x + '_ac.txt', sep='\t', index=False)
 
 pdbid = sys.argv[1]
 infile = sys.argv[2]
@@ -292,7 +285,7 @@ os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + gear
 PDBLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 RECLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 PEPLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
-
+ROSETTA = '/awork06-1/rosetta_src_2019.40.60963_bundle/tools/protein_tools/scripts/'
 refer = PDBLIB + '/' + pdbid + '_native.pdb'
 ncpu = str(psutil.cpu_count()-1)
 feats = pd.read_csv(PDBLIB  + pdbid + '.out',sep='\s+',header=None)
@@ -340,13 +333,14 @@ proc_two.join()
 proc_three.join()
 proc_four.join()
 
-shutil.copy('*.txt','../' + pdbid + '_' + hla + '_energy_matrix/')
+print os.getcwd()
+os.system('cp *.txt ../' + pdbid + '_' + hla + '_energy_matrix/')
 os.chdir('../' + pdbid + '_' + hla + '_energy_matrix/')
 
 df_ac = pd.read_csv('traj_1_ac.txt',sep ='\t')
 df_rmsd = pd.read_csv('traj_1_rmsd.txt',sep='\t')
 df_nac = pd.read_csv('traj_1_nac.txt',sep='\t')
-df_sk = pd.reac_csv('total_traj_1_sk.txt',sep='\t')
+df_sk = pd.read_csv('total_traj_1_sk.txt',sep='\t')
 df_hh = pd.read_csv('traj_1_hh.txt',sep='\t')
 df_sk.columns = ['PDB','skewness','Class','Decision']
 df_rmsd.columns = ['pdb','reference','rmsd']
