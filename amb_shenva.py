@@ -301,7 +301,7 @@ revise_origin(pdbid)
 os.chdir('traj_1/')
 os.mkdir(pdbid + '_' + hla + '_energy_matrix')
 os.chdir('pdb_from_prod/')
-list1 = sorted(glob.glob('*.pdb.*'))[:10]
+list1 = sorted(glob.glob('*.pdb.*'))
 pool = Pool(int(ncpu))
 pool.map(reT,list1)
 pool.close()
