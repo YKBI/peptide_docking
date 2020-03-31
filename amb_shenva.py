@@ -338,9 +338,9 @@ os.system('cp *.txt ../' + pdbid + '_' + hla + '_energy_matrix/')
 os.chdir('../' + pdbid + '_' + hla + '_energy_matrix/')
 
 df_ac = pd.read_csv('traj_1_ac.txt',sep ='\t')
-df_rmsd = pd.read_csv('traj_1_rmsd.txt',sep='\t')
+df_rmsd = pd.read_csv('traj_1_rmsd.txt',sep='\t',header=None)
 df_nac = pd.read_csv('traj_1_nac.txt',sep='\t')
-df_sk = pd.read_csv('total_traj_1_sk.txt',sep='\t')
+df_sk = pd.read_csv('total_traj_1_sk.txt',sep='\t',header=None)
 df_hh = pd.read_csv('traj_1_hh.txt',sep='\t')
 df_sk.columns = ['PDB','skewness','Class','Decision']
 df_rmsd.columns = ['pdb','reference','rmsd']
