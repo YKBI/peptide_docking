@@ -379,7 +379,7 @@ def enva_part(y):
     proc_three.join()
     proc_four.join()
 
-    ac.append(pd.read_csv(y.split('_')[1] + '_ac_ct.txt', sep='\t'))
+    ac.append(pd.read_csv(y.split('_')[1] + '_ac.txt', sep='\t'))
     nac.append(pd.read_csv(y.split('_')[1] + '_nac.txt', sep='\t'))
     sk.append(pd.read_csv('total_' + y.split('_')[1] + '_sk.txt', sep='\t', header=None).fillna('1.000000'))
     hh.append(pd.read_csv(y.split('_')[1] + '_hh.txt', sep='\t'))
