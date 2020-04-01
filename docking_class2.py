@@ -49,25 +49,21 @@ def native(x):
         W.write('END\n')
 
 def reT(x):
-    nam = x.split('.')
-    nam1 = '.'.join([nam[0], nam[3],'red',nam[2]])
     Olines = []
     recl = []
     pepl = []
-    os.system('csplit -f \'%s_\' %s \'/TER/\' --quiet'%(x,x))
-    with open(x + '_00', 'r') as F:
+    with open(x,'r') as F:
         for line in F.readlines():
             tline = line.strip()
             if tline.startswith('ATOM'):
                 if tline[-1] != 'H':
-                    recl.append(tline[:21] + 'A ' + tline[23:])
-    with open(x + '_01','r') as F:
-        for line in F.readlines():
-            tline = line.strip()
-            if tline.startswith('ATOM'):
-                if tline[-1] != 'H':
-                    pepl.append(tline[:21] + 'B' + str(pep_dic[tline[23:26].strip()]).rjust(4) + tline[26:])
-    with open(nam1,'w') as W:
+                    Olines.append(tline)
+    for line in Olines:
+        if line[21] == 'A':
+            recl.append(line)
+        elif line[21] != 'A':
+            pepl.append(line[:21] + 'B ' + line[23:])
+    with open(x.split('.')[0] + 'red.pdb','w') as W:
         for line in recl:
             W.write(line + '\n')
         W.write('TER\n')
