@@ -31,6 +31,23 @@ def reading_DB(x):
     hla = aclass.split('A')[0] + ''.join(atype.split(':')) + '_' + ''.join(btype.split(':'))
     return ffreq,hla,seqlen,o_seq
 
+def native(x):
+    recl = []
+    pepl = []
+    with open(RECLIB + x + '_rec.pdb','r') as R:
+        for line in R.readlines():
+            recl.append(line.strip())
+    with open(PEPLIB + x + '_pep.pdb','r') as P:
+        for line in P.readlines():
+            pepl.append(line.strip())
+    with open(x + '_native.pdb','w') as W:
+        for line in recl:
+            W.write(line + '\n')
+        W.write('TER\n')
+        for line in pepl:
+            W.write(line + '\n')
+        W.write('END\n')
+
 def reT(x):
     nam = x.split('.')
     nam1 = '.'.join([nam[0], nam[3],'red',nam[2]])
