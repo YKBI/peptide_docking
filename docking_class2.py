@@ -356,12 +356,12 @@ def enva_part(y):
         atom_revise(i)
     list1 = sorted(glob.glob('*rev.pdb'))
     if y == 'PDB_1ST':
-    	pool1 = multiprocessing.Pool(int(ncpu))
+    	pool1 = Pool(int(ncpu))
     	pool1.map(enva_working,list1)
     	pool1.close()
     	pool1.join()
     elif y == 'PDB_2ND':
-        pool2 = multiprocessing.Pool(int(ncpu))
+        pool2 = Pool(int(ncpu))
         pool2.map(enva_working,list1)
         pool2.close()
         pool2.join()
