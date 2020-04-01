@@ -384,6 +384,7 @@ def enva_part(y):
     sk.append(pd.read_csv('total_' + y.split('_')[1] + '_sk.txt', sep='\t', header=None).fillna('1.000000'))
     hh.append(pd.read_csv(y.split('_')[1] + '_hh.txt', sep='\t'))
     rmsd.append(pd.read_csv(y.split('_')[1] + '_rmsd.txt', sep='\t', header=None))
+    os,chdir('../')
 
 pdbid = sys.argv[1]
 inseq = sys.argv[2]
