@@ -326,7 +326,7 @@ def ac_part(x):
     phi_columns = ['PHI%d' % i for i in range(1, seqlen + 1)]
     psi_columns = ['PSI%d' % i for i in range(1, seqlen + 1)]
     for f in sorted(glob.glob('*.env')):
-        pdb = '_'.join([pdbid, str(x), f.split('_')[0].split('_')[6]])
+        pdb = '_'.join([pdbid, str(x), f.split('.')[0].split('_')[6]])
         pdbl.append(pdb)
         with open(f, 'r') as F:
             acc = []
