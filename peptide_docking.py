@@ -152,6 +152,7 @@ def prepare_input(x):
         write_exec(pdbid,inseq)
     else:
         os.system('cat ' + x + '_A.pdb ' +  x + '_B.pdb > ' + x + '_' + o_seq + '_inp.pdb')
+	os.system('cp ' + x + '_B.pdb ' + x + '_' + o_seq + '_pep.pdb')
 	if not os.path.exists(RES + '/PDB_1ST/'):
 	    os.makedirs(RES + '/PDB_1ST/')
 	    os.mkdir(RES + '/PDB_2ND/')
