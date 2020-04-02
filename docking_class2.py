@@ -89,7 +89,7 @@ def revise_origin(x):
                     rnn = int(line[22:26].strip())
                     rec_ser = []
                     rec_ser.append(line[13:17].strip())
-    with open(PEPLIB + x + '_pep.pdb','r') as P: #peptide reading
+    with open('../' + x + '_' + inseq + '_pep.pdb','r') as P: #peptide reading
         for line in P.readlines():
             lig_n.append(line[7:13].strip())
             if line[13:17].strip() == 'OXT' or line[13:17].strip() == '':
@@ -221,6 +221,7 @@ def prepare_input(x):
         write_exec(pdbid,inseq)
     else:
         os.system('cat ' + x + '_A.pdb ' +  x + '_B.pdb > ' + x + '_' + o_seq + '_inp.pdb')
+        os.system('cp ' + x + '_B.pdb ' + x + '_' + o_seq + '_pep.pdb')
         if not os.path.exists(RES + '/PDB_1ST/'):
             os.makedirs(RES + '/PDB_1ST/')
             os.mkdir(RES + '/PDB_2ND/')
