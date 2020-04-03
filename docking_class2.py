@@ -393,7 +393,7 @@ nout = sys.argv[3]
 infile = sys.argv[4]
 
 (ffreq,hla,seqlen,o_seq) = reading_DB(infile)
-ncpu = str(psutil.cpu_count()-2)
+ncpu = str(psutil.cpu_count()-4)
 RES = pdbid + '_' + inseq + '_' + hla
 
 if int(ncpu) >= 17 :
