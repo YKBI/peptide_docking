@@ -334,7 +334,15 @@ for i,j in zip(rfeats,rfeats1):
     cc_dic[i] = j
 revise_origin(pdbid)
 os.chdir('traj_1/')
-os.mkdir(pdbid + '_' + hla + '_energy_matrix')
+if not os.path.exists(pdbid + '_' + hla + '_energy_matrix'):
+    os.mkdir(pdbid + '_' + hla + '_energy_matrix')
+else:
+    pass
+
+if not os.path.exists('pdbs'):
+    os.mkdir('pdbs')
+else:
+    pass
 os.chdir('pdb_from_prod/')
 list1 = sorted(glob.glob('*.pdb.*'))
 pool = Pool(int(ncpu))
@@ -350,24 +358,37 @@ pool1.join()
 
 list2 = sorted(glob.glob('*.rev.*'))
 pool2 = Pool(int(ncpu))
-pool2.map(sheba_enva,list2)
+pool2.map(sheba,list2)
 pool2.close()
 pool2.join()
 proc_one = Process(target=rmsd_part,args=('traj_1',))
+proc_one.start()
+proc_one.join()
+pre_rmsd = pd.read_csv('traj_1_rmsd.txt',sep='\t',header=None)
+ppp = pre_rmsd[pre_rmsd[2]<=1.0][0].str.split('_').str[1]
+
+for i in ppp:
+    os.system('cp ' + pdbid + '_' + i + '_new.pdb ../pdbs')
+    os.system('cp ' + pdbid + '_' + i + '_het.pdb ../pdbs')
+    os.system('cp ' + pdbid + '.' + i + '.rev.pdb ../pdbs')
+os.chdir('../pdbs')
+list3 = sorted(glob.glob('*.rev.*'))
+pool3 = Pool(int(ncpu))
+pool3.map(enva,list2)
+proc_rm = Process(target=rmsd_part,args=('traj_1',))
 proc_two = Process(target=nac_sk_part,args=('traj_1',))
 proc_three = Process(target=hh_part,args=('traj_1',))
 proc_four = Process(target=ac_part,args=('traj_1',))
 
-proc_one.start()
+proc_rm.start()
 proc_two.start()
 proc_three.start()
 proc_four.start()
 
-proc_one.join()
+proc_rm.join()
 proc_two.join()
 proc_three.join()
 proc_four.join()
-
 print os.getcwd()
 os.system('cp *.txt ../' + pdbid + '_' + hla + '_energy_matrix/')
 os.chdir('../' + pdbid + '_' + hla + '_energy_matrix/')
