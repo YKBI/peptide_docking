@@ -9,6 +9,7 @@ nac = []
 sk = []
 hh = []
 rmsd = []
+bf = []
 rfeats = []
 rfeats1 = []
 pep_feat = []
@@ -25,15 +26,7 @@ def reading_DB(x):
     hlaclass = indb['HLA CLASS'].values[0]
     hlatype = indb['HLA TYPE'].values[0]
 
-    #hlaclass = indb['HLA CLASS'].values[0]
-    #atype = indb['Alpha TYPE'].values[0]
-    #btype = indb['Beta TYPE'].values[0]
-    #aclass = indb['Alpha CLASS'].values[0]
-    #bclass = indb['Beta CLASS'].values[0]
-    #ffreq = indb['Freq'].values[0]
     seqlen = len(o_seq)
-    #hla = aclass + ''.join(atype.split(':')) + '_' + bclass + ''.join(btype.split(':'))
-    #hla = aclass.split('A')[0] + ''.join(atype.split(':')) + '_' + ''.join(btype.split(':'))
     hla = hlaclass.split('-')[1] + ''.join(hlatype.split(':'))
     return hla,seqlen,o_seq
 def reT(x):
@@ -81,7 +74,7 @@ def revise_origin(x):
                     rnn = int(line[22:26].strip())
                     rec_ser = []
                     rec_ser.append(line[13:17].strip())
-    with open(PEPLIB + x + '_pep.pdb','r') as P: #peptide reading
+    with open(x + '_' + inseq + '_pep.pdb','r') as P: #peptide reading
         for line in P.readlines():
             lig_n.append(line[7:13].strip())
             if line[13:17].strip() == 'OXT' or line[13:17].strip() == '':
@@ -151,13 +144,13 @@ def sheba(x):
     outform1 = pdbid + '_' + num + '.pdb'
     outform2 = pdbid + '_' + num + '_new.pdb'
     outform3 = pdbid + '_' + num + '_het.pdb'
-    os.system('python ' + ROSETTA + '/clean_pdb.py %s A'%x)
-    os.system('python ' + ROSETTA + '/clean_pdb.py %s B'%x)
+    os.system('clean_pdb.py %s A'%x)
+    os.system('clean_pdb.py %s B'%x)
     os.system('cat ' + nnn + '_A.pdb ' + nnn + '_B.pdb > ' + nnn + '_AB.pdb')
     os.system('sheba_01 -x ' + refer + ' ' + nnn + '_AB.pdb')
     os.system('sheba_01 -t ' + namtrf + '_AB.trf ' + nnn + '_AB.pdb')
     shutil.move(nnn + '_AB.pdb.pdb',outform1)
-    os.system('python ' + ROSETTA + '/clean_pdb.py ' + outform1 + ' B')
+    os.system('clean_pdb.py ' + outform1 + ' B')
     os.system('cat ' + RECLIB + '%s_rec.pdb %s_%s_B.pdb > %s'%(pdbid,pdbid,num,outform2))
     os.system('sed \'s/ATOM  /HETATM/\' %s_%s_B.pdb > %s_%s_02'%(pdbid,num,pdbid,num))
     os.system('cat ' + RECLIB + '%s_rec.pdb %s_%s_02 > %s'%(pdbid,pdbid,num,outform3))
@@ -188,9 +181,9 @@ def enva(x):
     os.system('enva.v2 -e ' + outform2 + ' B')
 
 def rmsd_part(x):
-    for i in sorted(glob.glob(pdbid + '_*_B.pdb')):
+    for i in sorted(glob.glob(pdbid + '_*[0-9]_B.pdb')):
         #os.system('csplit -f \'' + i + '_\'' + i + ' \'/TER/\' --quiet')
-        os.system('rmsd_total ' + PEPLIB + '/' + pdbid + '_pep.pdb ' + i + ' bb >> ' + x + '_rmsd.txt')
+        os.system('rmsd_total ' + '../../' + pdbid + '_' + inseq + '_pep.pdb ' + i + ' bb >> ' + x + '_rmsd.txt')
 def nac_sk_part(x):
     pdbl = []
     mat_lst = []
@@ -293,8 +286,19 @@ def ac_part(x):
     act_df = pd.concat([pdbdf, acc_df, phi_df, psi_df], axis=1)
     act_df.to_csv(x + '_ac.txt', sep='\t', index=False)
 
+def b_part(x):
+    nni = ['B_factor-P%d'%i for i in range(1,seqlen+1)]
+    for i in sorted(glob.glob('*.pdb.csv')):
+        pdbn = i.split('.')[0] + '.pdb'
+        df = pd.read_csv(i,sep=',')
+        df_pep = df[df['Chain index'] == ' B']
+        df_pep['new_index'] = nni
+        df_pep_d = df_pep.drop(['Residue index','Chain index'],axis=1).set_index('new_index').T.rename(index={'Predicted MD fluctuation value':pdbn})
+        bf.append(df_pep_d)
+    pd.concat(bf).reset_index().rename(columns={'index':'pdb'}).to_csv('total_bfact.txt',sep='\t',index=False)
 pdbid = sys.argv[1]
-infile = sys.argv[2]
+infile = sys.argv[3]
+inseq = sys.argv[2]
 (hla,seqlen,o_seq) = reading_DB(infile)
 with open('feat.list','r') as F:
     for line in F.readlines():
@@ -344,7 +348,7 @@ if not os.path.exists('pdbs'):
 else:
     pass
 os.chdir('pdb_from_prod/')
-list1 = sorted(glob.glob('*.pdb.*'))
+list1 = sorted(glob.glob('*.pdb.*'))[:100]
 pool = Pool(int(ncpu))
 pool.map(reT,list1)
 pool.close()
@@ -365,30 +369,31 @@ proc_one = Process(target=rmsd_part,args=('traj_1',))
 proc_one.start()
 proc_one.join()
 pre_rmsd = pd.read_csv('traj_1_rmsd.txt',sep='\t',header=None)
-ppp = pre_rmsd[pre_rmsd[2]<=1.0][0].str.split('_').str[1]
-
+ppp = pre_rmsd[pre_rmsd[2]<=2.0][0].str.split('_').str[1]
+os.system('cp traj_1_rmsd.txt ../pdbs')
 for i in ppp:
     os.system('cp ' + pdbid + '_' + i + '_new.pdb ../pdbs')
     os.system('cp ' + pdbid + '_' + i + '_het.pdb ../pdbs')
-    os.system('cp ' + pdbid + '.' + i + '.rev.pdb ../pdbs')
+    os.system('cp ' + pdbid + '_' + inseq + '.' + i + '.rev.pdb ../pdbs')
 os.chdir('../pdbs')
 list3 = sorted(glob.glob('*.rev.*'))
 pool3 = Pool(int(ncpu))
 pool3.map(enva,list2)
-proc_rm = Process(target=rmsd_part,args=('traj_1',))
 proc_two = Process(target=nac_sk_part,args=('traj_1',))
 proc_three = Process(target=hh_part,args=('traj_1',))
 proc_four = Process(target=ac_part,args=('traj_1',))
+proc_five = Process(target=b_part,args=('traj_1',))
 
-proc_rm.start()
 proc_two.start()
 proc_three.start()
 proc_four.start()
+proc_five.start()
 
-proc_rm.join()
 proc_two.join()
 proc_three.join()
 proc_four.join()
+proc_five.join()
+
 print os.getcwd()
 os.system('cp *.txt ../' + pdbid + '_' + hla + '_energy_matrix/')
 os.chdir('../' + pdbid + '_' + hla + '_energy_matrix/')
