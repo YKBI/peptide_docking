@@ -22,16 +22,20 @@ def reading_DB(x):
     indb = hladb[hladb['PDB'] == pdbid.upper()].dropna()
     print indb
     o_seq = indb['Peptide Sequence'].values[0]
+    hlaclass = indb['HLA CLASS'].values[0]
+    hlatype = indb['HLA TYPE'].values[0]
+
     #hlaclass = indb['HLA CLASS'].values[0]
-    atype = indb['Alpha TYPE'].values[0]
-    btype = indb['Beta TYPE'].values[0]
-    aclass = indb['Alpha CLASS'].values[0]
-    bclass = indb['Beta CLASS'].values[0]
-    ffreq = indb['Freq'].values[0]
+    #atype = indb['Alpha TYPE'].values[0]
+    #btype = indb['Beta TYPE'].values[0]
+    #aclass = indb['Alpha CLASS'].values[0]
+    #bclass = indb['Beta CLASS'].values[0]
+    #ffreq = indb['Freq'].values[0]
     seqlen = len(o_seq)
     #hla = aclass + ''.join(atype.split(':')) + '_' + bclass + ''.join(btype.split(':'))
-    hla = aclass.split('A')[0] + ''.join(atype.split(':')) + '_' + ''.join(btype.split(':'))
-    return ffreq,hla,seqlen,o_seq
+    #hla = aclass.split('A')[0] + ''.join(atype.split(':')) + '_' + ''.join(btype.split(':'))
+    hla = hlaclass.split('-')[1] + ''.join(hlatype.split(':'))
+    return hla,seqlen,o_seq
 def reT(x):
     nam = x.split('.')
     nam1 = '.'.join([nam[0], nam[3],'red',nam[2]])
@@ -273,7 +277,7 @@ def ac_part(x):
 
 pdbid = sys.argv[1]
 infile = sys.argv[2]
-(ffreq,hla,seqlen,o_seq) = reading_DB(infile)
+(hla,seqlen,o_seq) = reading_DB(infile)
 with open('feat.list','r') as F:
     for line in F.readlines():
         pep_feat.append(line.strip())
