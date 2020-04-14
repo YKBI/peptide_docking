@@ -141,12 +141,13 @@ def atom_revise(x):
         for i,j in zip(lig_lines,lig_n):
             W.write(i[:7] + j.rjust(4) + '  ' + i[13:] + '\n')
         W.write('END\n')
-def sheba_enva(x):
+
+def sheba(x):
     nam = x.split('.')
     num = str(nam[1])
     nana = pdbid + '_' + num
-    namtrf = '.'.join([nam[0],num,nam[2]])
-    nnn = '.'.join([nam[0],nam[1],nam[2]])
+    namtrf = '.'.join([nam[0], num, nam[2]])
+    nnn = '.'.join([nam[0], nam[1], nam[2]])
     outform1 = pdbid + '_' + num + '.pdb'
     outform2 = pdbid + '_' + num + '_new.pdb'
     outform3 = pdbid + '_' + num + '_het.pdb'
@@ -160,7 +161,24 @@ def sheba_enva(x):
     os.system('cat ' + RECLIB + '%s_rec.pdb %s_%s_B.pdb > %s'%(pdbid,pdbid,num,outform2))
     os.system('sed \'s/ATOM  /HETATM/\' %s_%s_B.pdb > %s_%s_02'%(pdbid,num,pdbid,num))
     os.system('cat ' + RECLIB + '%s_rec.pdb %s_%s_02 > %s'%(pdbid,pdbid,num,outform3))
+    '''
+    if not os.path.exists(nana + '_a.out'):
+        os.system('enva.v2 -a ' + outform2 + ' > ' + nana + '_a.out')
+    if not os.path.exists(nana + '_b.out'):
+        os.system('enva.v2 -b ' + outform3 + ' > ' + nana + '_b.out')
+    if not os.path.exists(nana + '_m.out'):
+        os.system('enva.v2 -m ' + outform2 + ' ' + pdbid +  'B > ' + nana + '_m.out' )
+    os.system('enva.v2 -e ' + outform2 + ' B')'''
 
+def enva(x):
+    nam = x.split('.')
+    num = str(nam[1])
+    nana = pdbid + '_' + num
+    namtrf = '.'.join([nam[0], num, nam[2]])
+    nnn = '.'.join([nam[0], nam[1], nam[2]])
+    outform1 = pdbid + '_' + num + '.pdb'
+    outform2 = pdbid + '_' + num + '_new.pdb'
+    outform3 = pdbid + '_' + num + '_het.pdb'
     if not os.path.exists(nana + '_a.out'):
         os.system('enva.v2 -a ' + outform2 + ' > ' + nana + '_a.out')
     if not os.path.exists(nana + '_b.out'):
