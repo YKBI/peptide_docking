@@ -286,10 +286,16 @@ for i,j in zip(pep_feat,range(1,len(pep_feat)+1)):
 os.environ['neogear'] = '/awork06-1/neoscan_gear/'
 gear = os.environ['neogear']
 os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + gear
+PDBLIB = '/awork06-1/YKLee/pdpdb/Neoscan_V2/Native/'
+RECLIB = '/awork06-1/YKLee/pdpdb/Neoscan_V2/v2/revise_pdb/receptor/' + hla + '/'
+PEPLIB = '/awork06-1/YKLee/pdpdb/Neoscan_V2/v2/revise_pdb/peptide/' + hla + '/'
+ROSETTA_DB = rosetta + 'main/database'
+'''
 PDBLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 RECLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 PEPLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 ROSETTA = '/awork06-1/rosetta_src_2019.40.60963_bundle/tools/protein_tools/scripts/'
+'''
 refer = PDBLIB + '/' + pdbid + '_native.pdb'
 ncpu = str(psutil.cpu_count()-1)
 feats = pd.read_csv(PDBLIB  + pdbid + '.out',sep='\s+',header=None)
