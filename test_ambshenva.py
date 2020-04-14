@@ -19,7 +19,7 @@ cc_dic = {}
 pep_dic = {}
 def reading_DB(x):
     hladb = pd.read_csv(x,sep='\t')
-    indb = hladb[hladb['PDB'] == pdbid.upper()].dropna()
+    indb = hladb[hladb['PDB ID'] == pdbid.upper()].dropna()
     print indb
     o_seq = indb['Peptide Sequence'].values[0]
     hlaclass = indb['HLA CLASS'].values[0]
@@ -283,6 +283,13 @@ with open('feat.list','r') as F:
         pep_feat.append(line.strip())
 for i,j in zip(pep_feat,range(1,len(pep_feat)+1)):
     pep_dic[i] = j
+
+os.environ['rosetta'] = '/awork08/93_hong/rosetta_src_2019.14.60699_bundle/'
+os.environ['neogear'] = '/awork06-1/neoscan_gear/'
+gear = os.environ['neogear']
+rosetta = os.environ['rosetta']
+os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + rosetta + 'main/source/bin/:' + rosetta + 'tools/protein_tools/scripts/'
+os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + gear
 os.environ['neogear'] = '/awork06-1/neoscan_gear/'
 gear = os.environ['neogear']
 os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + gear
