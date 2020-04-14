@@ -303,9 +303,9 @@ RECLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 PEPLIB = '/awork06-1/YKLee/final_class2/' + ffreq + '/' + hla + '/minimize/'
 ROSETTA = '/awork06-1/rosetta_src_2019.40.60963_bundle/tools/protein_tools/scripts/'
 '''
-refer = PDBLIB + '/' + pdbid + '_native.pdb'
+refer = PDBLIB + '/' + hla + '_native/'+ pdbid + '_native.pdb'
 ncpu = str(psutil.cpu_count()-1)
-feats = pd.read_csv(PDBLIB  + pdbid + '.out',sep='\s+',header=None)
+feats = pd.read_csv(PDBLIB  + '/' + hla + '_native/' + pdbid + '.out',sep='\s+',header=None)
 feats_filt = feats[feats[17] == 1].iloc[:,13:16]
 for i in feats_filt.values.tolist():
     rfeats.append(str(i[0]) + '_' + '_'.join(i[1:]))
