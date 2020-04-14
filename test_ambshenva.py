@@ -179,6 +179,8 @@ def enva(x):
     if not os.path.exists(nana + '_m.out'):
         os.system('enva.v2 -m ' + outform2 + ' ' + pdbid +  'B > ' + nana + '_m.out' )
     os.system('enva.v2 -e ' + outform2 + ' B')
+    if not os.path.exists(nana + '_new.pdb.csv'):
+        os.system('python ../../../../peptide_docking/predictFluct.py ' + outform2 + ' XRAY')
 
 def rmsd_part(x):
     for i in sorted(glob.glob(pdbid + '_*[0-9]_B.pdb')):
@@ -289,7 +291,7 @@ def ac_part(x):
 def b_part(x):
     nni = ['B_factor-P%d'%i for i in range(1,seqlen+1)]
     for i in sorted(glob.glob('*.pdb.csv')):
-        pdbn = i.split('.')[0] + '.pdb'
+        pdbn = pdbid + '_' + x + '_' + i.split('_')[1]
         df = pd.read_csv(i,sep=',')
         df_pep = df[df['Chain index'] == ' B']
         df_pep['new_index'] = nni
@@ -398,6 +400,7 @@ print os.getcwd()
 os.system('cp *.txt ../' + pdbid + '_' + hla + '_energy_matrix/')
 os.chdir('../' + pdbid + '_' + hla + '_energy_matrix/')
 
+df_bf = pd.read_csv('total_bfact.txt',sep='\t')
 df_ac = pd.read_csv('traj_1_ac.txt',sep ='\t')
 df_rmsd = pd.read_csv('traj_1_rmsd.txt',sep='\t',header=None)
 df_nac = pd.read_csv('traj_1_nac.txt',sep='\t')
