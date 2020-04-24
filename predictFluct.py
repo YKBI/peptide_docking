@@ -8,15 +8,15 @@ from subprocess import Popen
 
 
 # SET THESE PARAMETERS :
-svm_scale="/home/user1/peptide_docking/flexPred/libsvm-3.24/svm-scale"
-svm_predict="/home/user1/peptide_docking/flexPred/libsvm-3.24/svm-predict"
+svm_scale="/awork06-1/YKLee/flexPred/libsvm-3.24/svm-scale"
+svm_predict="/awork06-1/YKLee/flexPred/libsvm-3.24/svm-predict"
 
 #XRAY
-svr_modelXRAY_path="/home/user1/peptide_docking/flexPred/Set15SVRModel"
-svr_modelXRAY_range_path="/home/user1/peptide_docking/flexPred/Set15data.range"
+svr_modelXRAY_path="/awork06-1/YKLee/flexPred/Set15SVRModel"
+svr_modelXRAY_range_path="/awork06-1/YKLee/flexPred/Set15data.range"
 #NMR
-svr_modelNMR_path="/home/user1/peptide_docking/flexPred/Set16SVRModel"
-svr_modelNMR_range_path="/home/user1/peptide_docking/flexPred/Set16data.range"
+svr_modelNMR_path="/awork06-1/YKLee/flexPred/Set16SVRModel"
+svr_modelNMR_range_path="/awork06-1/YKLee/flexPred/Set16data.range"
 
 class Vector:
    def __init__(self,x,y,z,bf,idx, name):
