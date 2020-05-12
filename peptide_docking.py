@@ -370,10 +370,10 @@ def enva_part(y):
     rmsd.append(pd.read_csv(y.split('_')[1] + '_rmsd.txt', sep='\t', header=None))
     os.chdir('../')
 
-pdbid = sys.argv[1]
-inseq = sys.argv[2]
-nout = sys.argv[3]
-dbfile = sys.argv[4]
+pdbid = sys.argv[1].strip()
+inseq = sys.argv[2].strip()
+nout = sys.argv[3].strip()
+dbfile = sys.argv[4].strip()
 (hla,o_seq,seqlen) = reading_DB(dbfile)
 
 ncpu = str(psutil.cpu_count()-1)
