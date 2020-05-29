@@ -67,7 +67,7 @@ df_sk = pd.read_csv('total_sk.txt',sep='\t')
 df_hh = pd.read_csv('total_hh.txt',sep='\t')
 df_bf = pd.read_csv('total_bfact.txt',sep='\t')
 rmsd = pd.read_csv('colad_rmsd.txt',sep='\t')
-rmsd[4] = pdbid + '_' + rmsd[rmsd['2'] <=cutoff]['3'].str.split('_').str[0] + '_' + rmsd[rmsd['2']<=cutoff]['3'].str.split('_').str[6]
+rmsd[4] = pdbid + '_' + rmsd['3'].str.split('_').str[0] + '_' + rmsd['3'].str.split('_').str[6]
 rmsd.columns = ['pdb','refer','rmsd','pre_PDB','PDB']
 rmsd.drop(['pdb','pre_PDB'],axis=1).set_index(['PDB']).reset_index().to_csv('total_rmsd1.txt',sep='\t',index=False)
 df_rmsd = pd.read_csv('total_rmsd1.txt',sep='\t').drop(['refer'],axis=1)
