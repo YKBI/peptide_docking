@@ -9,7 +9,7 @@ time python peptide_docking/peptide_docking.py $pdb $seq 500 peptide_docking/Doc
 
 time python peptide_docking/crebfa.py "$pdb"_"$seq"_"$Ht"
 
-rm -rf "$outdir"/PDB_*/*.out "$outdir"/pdbs
+rm -rf "$outdir"/PDB_*/*.out "$outdir"/pdbs "$outdir"/PDB_*/*env
 time tar cf - $outdir |pbzip2 > "$outdir".tar.bz2
 ssh user1@10.1.5.9 "mkdir -p /arc10-2-03/200529_NeoInven/output/"
 ssh user1@10.1.5.9 "mkdir -p /arc10-2-06/200529_NeoInven/output_comp/"
