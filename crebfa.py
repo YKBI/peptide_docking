@@ -2,14 +2,14 @@ import pandas as pd
 import os,sys,glob,psutil
 from multiprocessing import Pool
 RES = sys.argv[1]
-cutoff = float(sys.argv[2])
 #tf = sys.argv[3]
-pdbid = RES.split('_')[1]
-inseq = RES.split('_')[0]
+pdbid = RES.split('_')[0]
+inseq = RES.split('_')[1]
 hla = RES.split('_')[2]
 print pdbid,inseq,hla
 bf = []
 pre_rmsd = []
+'''
 def ff(x):
 	df = pd.read_csv(x + '_rmsd.txt',sep='\t',header=None)
 	ppp = df[df[2]<=cutoff][0].str.split('.').str[0] + '.pdb'
@@ -19,7 +19,7 @@ def ff(x):
 		os.system('sed \'s/HETATM/ATOM  /\' ' + i.split('.')[0] + '_het.pdb > ../pdbs/' + str(x) + '_' + '_'.join(i.split('.')[:5]) + '_rev.pdb')
 		#os.system('cp ' + i + ' ../pdbs')
 	os.chdir('../')
-
+'''
 def pred(x):
 	os.system('python ~/peptide_docking/predictFluct.py ' + x + ' XRAY')
 def b_part(x):
