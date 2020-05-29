@@ -9,17 +9,17 @@ hla = RES.split('_')[2]
 print pdbid,inseq,hla
 bf = []
 pre_rmsd = []
-'''
+
 def ff(x):
 	df = pd.read_csv(x + '_rmsd.txt',sep='\t',header=None)
-	ppp = df[df[2]<=cutoff][0].str.split('.').str[0] + '.pdb'
+	ppp = df[0].str.split('.').str[0] + '.pdb'
 	df[3] = x + '_' + df[0].str.split('.').str[0]
 	pre_rmsd.append(df)
 	for i in ppp:
 		os.system('sed \'s/HETATM/ATOM  /\' ' + i.split('.')[0] + '_het.pdb > ../pdbs/' + str(x) + '_' + '_'.join(i.split('.')[:5]) + '_rev.pdb')
 		#os.system('cp ' + i + ' ../pdbs')
 	os.chdir('../')
-'''
+
 def pred(x):
 	os.system('python ~/peptide_docking/predictFluct.py ' + x + ' XRAY')
 def b_part(x):
@@ -37,8 +37,8 @@ def b_part(x):
 	pd.concat(bf).reset_index().rename(columns={'index':'PDB'}).to_csv('total_bfact.txt',sep='\t',index=False)
 	os.system('cp total_bfact.txt ../' + RES + '_energy_matrix/')
 	os.chdir('../')
-ddf = os.getcwd()
-os.system('cp --verbose -rf ' + RES + ' ~/')
+#ddf = os.getcwd()
+#os.system('cp --verbose -rf ' + RES + ' ~/')
 os.chdir('/home/user1/' + RES)
 if not os.path.exists('pdbs'):
 	os.mkdir('pdbs')
@@ -80,5 +80,5 @@ df_final3 = df_final2.drop(['PDB'],axis=1).rename(columns={'PDB1':'PDB'}).set_in
 #df_final3['class'] = tf
 df_final3.to_csv(pdbid + '_' + inseq + '_' + hla +'_total.txt',sep='\t',index=False,na_rep='-')
 os.chdir('/home/user1/')
-os.system('cp --verbose -rf ' + RES + ' ' + ddf)
-os.system('rm -rf ' + RES)
+#os.system('cp --verbose -rf ' + RES + ' ' + ddf)
+#os.system('rm -rf ' + RES)
