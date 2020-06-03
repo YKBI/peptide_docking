@@ -1,0 +1,9 @@
+./enva.v2 -m A0206_A9.pdb XXXXB > A0206_A9.out ; cp A0206_A9.out A0206_A9_native.out
+./enva.v2 -m A0206_B9.pdb XXXXB > A0206_B9.out ; cp A0206_B9.out A0206_B9_native.out
+./enva.v2 -m A0206_C9.pdb XXXXB > A0206_C9.out ; cp A0206_C9.out A0206_C9_native.out
+./enva.v2 -m A0206_D9.pdb XXXXB > A0206_D9.out ; cp A0206_D9.out A0206_D9_native.out
+./enva.v2 -m A0206_E9.pdb XXXXB > A0206_E9.out ; cp A0206_E9.out A0206_E9_native.out
+./enva.v2 -m A0206_F9.pdb XXXXB > A0206_F9.out ; cp A0206_F9.out A0206_F9_native.out
+./enva.v2 -m A0206_G9.pdb XXXXB > A0206_G9.out ; cp A0206_G9.out A0206_G9_native.out
+./enva.v2 -m A0206_H9.pdb XXXXB > A0206_H9.out ; cp A0206_H9.out A0206_H9_native.out
+./enva.v2 -m A0206_I9.pdb XXXXB > A0206_I9.out ; cp A0206_I9.out A0206_I9_native.out
