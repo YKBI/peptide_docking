@@ -386,9 +386,9 @@ if int(ncpu) >= 17 :
     rosetta = os.environ['rosetta']
     os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + rosetta + 'main/source/bin/:' + rosetta + 'tools/protein_tools/scripts/'
     os.environ['PATH'] += ':' + os.environ['PATH'] + ':' + gear 
-    os.system('scp -rpq user1@10.1.5.6:/awork06-1/YKLee/pdpdb/Neoscan_V2/Native /lwork01/')
-    os.system('scp -rpq user1@10.1.5.6:/awork06-1/YKLee/pdpdb/Neoscan_V2/v2/revise_pdb/receptor/ /lwork01/')
-    os.system('scp -rpq user1@10.1.5.6:/awork06-1/YKLee/pdpdb/Neoscan_V2/v2/revise_pdb/peptide/ /lwork01/')
+    os.system('scp -rpq user1@10.0.3.5:/lwork03/pdpdb/Neoscan_V2/Native /lwork01/')
+    os.system('scp -rpq user1@10.0.3.5:/lwork03/pdpdb/Neoscan_V2/v2/revise_pdb/receptor/ /lwork01/')
+    os.system('scp -rpq user1@10.0.3.5:/lwork03/pdpdb/Neoscan_V2/v2/revise_pdb/peptide/ /lwork01/')
     PDBLIB = '/lwork01/Native/'
     PEPLIB = '/lwork01/peptide/' + hla + '/'
     RECLIB = '/lwork01/receptor/' + hla + '/'
