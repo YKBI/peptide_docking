@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-pdb=`tr '[A-Z]' '[a-z]'`<<<$1
+pdb=`tr \'[A-Z]\' \'[a-z]\' <<<"$1"`
 seq=$2
 Ht=$3
 outdir="$pdb"_"$seq"_"$Ht"
