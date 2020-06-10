@@ -5,7 +5,7 @@ pdb=$1
 seq=$2
 Ht=$3
 outdir="$pdb"_"$seq"_"$Ht"
-time python peptide_docking/peptide_docking.py $pdb $seq 200 peptide_docking/DockingDB-0508.txt > "$outdir".logA
+time python peptide_docking/peptide_docking.py $pdb $seq 100 peptide_docking/DockingDB-0508.txt > "$outdir".logA
 
 time python peptide_docking/crebfa.py "$pdb"_"$seq"_"$Ht" > "$outdir".logB
 
