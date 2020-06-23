@@ -18,7 +18,7 @@ dependencies:
   - multiprocess=0.70.9=py27h516909a_0
   - ncurses=6.2=he6710b0_0
   - numpy=1.13.3=py27ha266831_3
-  - openssl=1.1.1=h7b6447c_0
+  - openssl
   - pandas=0.22.0=py27hf484d3e_0
   - pip=19.3.1=py27_0
   - psutil=5.7.0=py27h516909a_0
