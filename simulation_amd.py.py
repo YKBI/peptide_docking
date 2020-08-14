@@ -324,7 +324,7 @@ def set_sim_options(filename, seed_number=None, process=None, str_res_id=None, e
                   nstlim = int(prod_freq_time * fs2ns/dt)
                   ntwr = int(wrt_pd_rst_freq*nstlim)
 		  if iamd != 0:
-		      EthreshP, EthreshD, alphaP, alphaD = ext_amd_parm('traj_1/%s/equil_2.out'%equil_dir)
+		      EthreshP, EthreshD, alphaP, alphaD = ext_amd_parm('traj_1/%s/equil_3.out'%equil_dir)
 		      new_cont.append('  iamd=%d,\n'%iamd)
 		      new_cont.append('  ethreshd=%f,alphad=%f,\n'%(EthreshD,alphaD))
 		      new_cont.append('  ethreshp=%f,alphap=%f,\n'%(EthreshP,alphaP))
